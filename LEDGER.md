@@ -1,12 +1,12 @@
 # BayanGate Task Ledger
 
 ## Current Context
-- **Current Task**: BG-004 — CLI & Python SDK API.
-- **Current Lifecycle State**: `REVIEW_PENDING`
+- **Current Task**: BG-005 — Synthetic Accuracy & Boundary Test Suite.
+- **Current Lifecycle State**: `IN_PROGRESS`
 - **Current Owner**: Gemini Flash (Lead Engineering Executor).
 - **Branch**: main
-- **Last Verified Commit**: ea19656 (Milestone BG-003 Certified ACCEPTED)
-- **Independent Review Status**: REVIEW_PENDING (Milestones BG-001, BG-002, and BG-003 ACCEPTED; BG-004 implementation complete with 91/91 tests passing, submitted to EGM Goldfish Auditor)
+- **Last Verified Commit**: 4ccc608 (Milestone BG-004 Certified ACCEPTED)
+- **Independent Review Status**: Milestones BG-001, BG-002, BG-003, and BG-004 Certified ACCEPTED by independent EGM Goldfish Auditor; Milestone BG-005 in progress.
 
 ## Backlog
 | Task ID | Description | State | Owner | Acceptance Criteria |
@@ -14,8 +14,8 @@
 | BG-001  | Arabic-Indic Numeral Normalizer & Span Mapper | **ACCEPTED** | Gemini Flash | 1. Typed schemas for `EntityType`, `MaskingPolicy`, `PIISpan`, and `RedactionResult`.<br>2. Bidirectional translation between Western (0-9) and Eastern Arabic-Indic numerals (٠-٩, ۰-۹).<br>3. Zero-drift unicode coordinate tracking (`NormalizedText`) through Tashkeel/Tatweel stripping.<br>4. Pure Python standard library with zero external dependencies.<br>5. 20 automated tests passing with 0 failures.<br>6. Independent review by EGM Goldfish Auditor.<br>*Certified ACCEPTED by EGM Goldfish Auditor.* |
 | BG-002  | Regional Pattern Matchers (National IDs, GCC IBANs, Phones) | **ACCEPTED** | Gemini Flash | 1. Algorithmic and structural validators in `bayan_gate/matchers.py` (Luhn, ISO 7064 MOD 97-10 IBAN, UAE Emirates ID, Egyptian National ID, Credit Cards, regional phone numbers).<br>2. Precision detection engine in `bayan_gate/engine.py` (`RegionalPIIEngine`) integrating `ArabicIndicNormalizer` for zero-drift offset grounding.<br>3. Overlap resolution prioritizing checksum-valid and specific entity types.<br>4. 56 automated tests passing with 0 failures.<br>5. Pure Python standard library with zero external dependencies.<br>6. Independent review by EGM Goldfish Auditor.<br>*Certified ACCEPTED by EGM Goldfish Auditor.* |
 | BG-003  | Redactor Engine & Masking Policies | **ACCEPTED** | Gemini Flash | 1. Configurable redaction engine (`bayan_gate/redactor.py`) with all 4 masking policies: `REDACT_FULL`, `MASK_PARTIAL`, `PSEUDONYMIZE_HASH`, `REPLACE_SYNTHETIC`.<br>2. Reverse character replacement order guaranteeing zero offset drift across mixed RTL/LTR Arabic and Latin text.<br>3. Zero sensitive logging: default serialization suppresses raw entity strings.<br>4. Cryptographic SHA-256 audit hash receipts.<br>5. Pure Python standard library (zero external dependencies).<br>6. 75 automated tests passing with 0 failures.<br>7. Independent review by EGM Goldfish Auditor.<br>*Certified ACCEPTED by EGM Goldfish Auditor.* |
-| BG-004  | CLI & Python SDK API | **REVIEW_PENDING** | Gemini Flash | 1. Full CLI implementation (`bayan_gate/cli.py`) with `redact`, `scan`, and `demo` subcommands.<br>2. Stdin/stdout streaming and file piping support.<br>3. Exit code 3 gate for CI/CD sensitive data scan alerts.<br>4. Python SDK top-level convenience API (`detect`, `redact`, `stream_redact`).<br>5. Comprehensive operator guide in `INSTALL.md` and updated `README.md`.<br>6. 91 automated tests passing with 0 failures.<br>7. Independent review by EGM Goldfish Auditor. |
-| BG-005  | Synthetic Accuracy & Boundary Test Suite | READY | Pending | Comprehensive unit and property-based test cases covering tricky RTL/LTR mixing. |
+| BG-004  | CLI & Python SDK API | **ACCEPTED** | Gemini Flash | 1. Full CLI implementation (`bayan_gate/cli.py`) with `redact`, `scan`, and `demo` subcommands.<br>2. Stdin/stdout streaming and file piping support.<br>3. Exit code 3 gate for CI/CD sensitive data scan alerts.<br>4. Python SDK top-level convenience API (`detect`, `redact`, `stream_redact`).<br>5. Comprehensive operator guide in `INSTALL.md` and updated `README.md`.<br>6. 91 automated tests passing with 0 failures.<br>7. Independent review by EGM Goldfish Auditor.<br>*Certified ACCEPTED by EGM Goldfish Auditor.* |
+| BG-005  | Synthetic Accuracy & Boundary Test Suite | **IN_PROGRESS** | Gemini Flash | 1. Comprehensive synthetic multi-lingual test dataset with mixed RTL/LTR Arabic/English paragraphs and diverse PII types.<br>2. Stress testing with heavy diacritics (Tashkeel), Kashida elongation (Tatweel `ـ`), and Eastern Arabic-Indic numerals (`٠-٩`).<br>3. Boundary and extreme inputs: empty text, whitespace, single characters, large texts, corrupted checksums, clinging punctuation.<br>4. Verification of format preservation (`MASK_PARTIAL`) and pseudonym consistency across streaming chunks.<br>5. Pure Python standard library with zero external dependencies.<br>6. 100+ automated tests passing with 0 failures.<br>7. Independent review by EGM Goldfish Auditor. |
 
 ---
 
@@ -61,7 +61,9 @@
   - Added comprehensive operator guide in `INSTALL.md` and updated `README.md`.
   - Added 16 new automated tests in `tests/test_cli.py`.
   - Full test suite: **91/91 tests passing** (`python3 -m unittest discover tests`).
-  - BG-004 lifecycle state: **REVIEW_PENDING** (submitted to independent EGM Goldfish Auditor).
+  - Commit: `4ccc608`.
+  - Independent review receipt: EGM Goldfish Codebase Details Auditor (`egm-codebase-details` subagent `dd852d86-cf02-4891-ba0a-8c6484bfd12c`) delivered official **ACCEPTED** verdict recorded in `reviews/EGM_BG004_ACCEPTANCE_VERDICT.md`.
+  - BG-004 lifecycle state: **ACCEPTED**.
 
 ## Limitations & Notes
 - Checksums strictly verified where standard (Luhn, ISO 7064 MOD 97-10 for IBAN); no fictional algorithmic claims made.

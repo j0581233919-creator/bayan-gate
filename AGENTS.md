@@ -19,17 +19,37 @@ BayanGate is an Arabic/MENA-focused sensitive data recognition and redaction SDK
 `READY` -> `IN_PROGRESS` -> `IMPLEMENTED` -> `TESTED` -> `REVIEW_PENDING` -> `ACCEPTED` -> `RELEASE_READY`
 
 ## Task Ledger Summary
-- **Current Task**: BG-004 — CLI & Python SDK API.
-- **Current Lifecycle State**: `REVIEW_PENDING`
+- **Current Task**: BG-005 — Synthetic Accuracy & Boundary Test Suite.
+- **Current Lifecycle State**: `IN_PROGRESS`
 - **Current Owner**: Gemini Flash (Lead Engineering Executor).
 - **Independent Reviewer**: EGM Goldfish Codebase Details Auditor (`egm-codebase-details`).
 - **Branch**: main
-- **Last Verified Commit**: ea19656
-- **Independent Review Status**: Milestones BG-001, BG-002, and BG-003 Certified ACCEPTED; Milestone BG-004 implemented with 91/91 automated tests passing and submitted for independent EGM Goldfish review.
+- **Last Verified Commit**: 4ccc608
+- **Independent Review Status**: Milestones BG-001, BG-002, BG-003, and BG-004 Certified ACCEPTED by independent EGM Goldfish Auditor; Milestone BG-005 in progress.
 - **Completed Tasks**:
   - BG-001: Arabic-Indic Numeral Normalizer & Span Mapper (ACCEPTED)
   - BG-002: Regional Pattern Matchers (National IDs, GCC IBANs, Phones) (ACCEPTED)
   - BG-003: Redactor Engine & Masking Policies (ACCEPTED)
+  - BG-004: CLI & Python SDK API (ACCEPTED)
+
+## Verification Criteria for BG-005
+1. **Synthetic Multi-Lingual & Mixed-Script Test Suite (`tests/test_synthetic_boundary.py`)**:
+   - Mixed RTL/LTR Arabic and English paragraphs with diverse PII types (Saudi National ID, Iqama, UAE Emirates ID, Egyptian National ID, GCC IBANs, Visa, Mastercard, Amex, regional phone numbers, emails, IPv4/IPv6).
+   - Numerals: Eastern Arabic-Indic (`٠-٩`), Extended Persian/Urdu (`۰-۹`), and Western digits (`0-9`) interspersed with text, punctuation, currency symbols (SAR, AED, EGP, $, €, £), and math operators.
+   - Heavy diacritics (Tashkeel) and typographic elongation (Tatweel / Kashida `ـ`) embedded within and surrounding sensitive identifiers.
+2. **Extreme Edge & Boundary Cases**:
+   - Empty strings, zero-length files, pure whitespace, single-character strings, strings without any PII.
+   - Partial, truncated, or malformed PII candidates (e.g. 9-digit Saudi IDs, 13-digit Egyptian IDs, corrupted IBAN MOD 97-10 checksums, invalid Luhn credit cards).
+   - Clinging punctuation and enclosures: parentheses `(0501234567)`, brackets `[SA1234...]`, quotes `"1082345678"`, commas, and question marks.
+   - Large text payloads (10,000+ characters) to verify linear performance and memory stability.
+3. **Format & Consistency Integrity**:
+   - Format preservation: `MASK_PARTIAL` preserves structural delimiters (`-`, spaces) and numeral systems without glyph corruption or RTL direction inversion.
+   - Pseudonym consistency: identical sensitive values produce identical HMAC pseudonyms across separate lines and chunks when given the same salt.
+4. **Pure Python Standard Library**:
+   - Zero external dependencies.
+5. **Automated Verification**:
+   - 100+ automated tests passing across the entire test suite (`python3 -m unittest discover tests`).
+   - Independent verification and audit by EGM Goldfish Quality Auditor.
 
 ## Verification Criteria for BG-004
 1. **Command Line Interface (`bayan_gate/cli.py`)**:
