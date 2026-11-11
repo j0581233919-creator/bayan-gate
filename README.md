@@ -31,7 +31,7 @@ BayanGate provides high-precision recognition, classification, and redaction of 
 
 ## Quickstart
 
-### 1. Run Automated Behavioral Tests (91 Passing Tests)
+### 1. Run Automated Behavioral Tests (117 Passing Tests)
 ```bash
 python3 -m unittest discover tests
 ```

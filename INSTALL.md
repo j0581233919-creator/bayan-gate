@@ -140,7 +140,7 @@ with open("input.txt", "r", encoding="utf-8") as in_f, open("output.txt", "w", e
 
 ## 6. Verification & Automated Tests
 
-Run the full automated test suite (all 91 tests) anytime:
+Run the full automated test suite (all 117 tests) anytime:
 ```bash
 python3 -m unittest discover tests
 ```
