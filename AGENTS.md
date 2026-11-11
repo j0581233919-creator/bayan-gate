@@ -19,13 +19,33 @@ BayanGate is an Arabic/MENA-focused sensitive data recognition and redaction SDK
 `READY` -> `IN_PROGRESS` -> `IMPLEMENTED` -> `TESTED` -> `REVIEW_PENDING` -> `ACCEPTED` -> `RELEASE_READY`
 
 ## Task Ledger Summary
-- **Current Task**: BG-001 — Arabic-Indic Numeral Normalizer & Span Mapper.
-- **Current Lifecycle State**: `REVIEW_PENDING`
+- **Current Task**: BG-002 — Regional Pattern Matchers (National IDs, GCC IBANs, Phones).
+- **Current Lifecycle State**: `IN_PROGRESS`
 - **Current Owner**: Gemini Flash (Lead Engineering Executor).
 - **Independent Reviewer**: EGM Goldfish Codebase Details Auditor (`egm-codebase-details`).
 - **Branch**: main
-- **Last Verified Commit**: 110da37
-- **Independent Review Status**: BG-001 implemented with 20/20 automated tests passing; submitted for independent EGM Goldfish review.
+- **Last Verified Commit**: 4d6e42c
+- **Independent Review Status**: Milestone BG-001 independently audited and certified ACCEPTED by EGM Goldfish Codebase Details Auditor; 20/20 tests passing.
+- **Completed Tasks**:
+  - BG-001: Arabic-Indic Numeral Normalizer & Span Mapper (ACCEPTED)
+
+## Verification Criteria for BG-002
+1. **Regional Identity Document Matchers (`bayan_gate/matchers/national_ids.py` or `bayan_gate/matchers.py`)**:
+   - Saudi National ID: 10 digits starting with `1`, Luhn-like weighted check (or 10-digit structure validation).
+   - Saudi Iqama (Resident ID): 10 digits starting with `2`.
+   - UAE Emirates ID: 15 digits (`784-YYYY-XXXXXXX-Z`), ISO structure validation.
+   - Egyptian National ID: 14 digits with century digit (`2` or `3`) and valid Gregorian birth date encoding (`CYYMMDDSSNNNC`).
+2. **Financial Matchers**:
+   - GCC & Regional IBANs: ISO 13616 compliant regex with ISO 7064 MOD 97-10 checksum validation (Saudi Arabia `SA` 24 chars, UAE `AE` 23 chars, Egypt `EG` 29 chars, Kuwait `KW` 30 chars, Qatar `QA` 29 chars, Bahrain `BH` 22 chars, Oman `OM` 23 chars).
+   - Credit Cards: 13-19 digits, Luhn checksum validation, card network detection (Visa, Mastercard, Mada, Amex).
+3. **Contact & Universal Matchers**:
+   - Regional phone numbers: International dial codes (+966, +971, +20, etc.) and local mobile patterns (e.g. Saudi `05XXXXXXXX`, UAE `05XXXXXXXX`, Egypt `01XXXXXXXXX`).
+   - Email addresses: RFC-compliant email recognition.
+   - IP addresses: IPv4 and IPv6 detection.
+4. **Eastern Arabic-Indic & Zero-Drift Integration**:
+   - Matches both raw Eastern Arabic-Indic numerals (`٠-٩`) and Western digits (`0-9`), mapping spans back to exact raw unicode character offsets.
+5. **Pure Python Standard Library**: Zero external PyPI dependencies.
+6. **Automated Verification**: Complete test suite passing with 0 failures (`python3 -m unittest discover tests`).
 
 ## Verification Criteria for BG-001
 1. **Core Data Models (`bayan_gate/models.py`)**:
