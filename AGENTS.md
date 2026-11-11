@@ -19,16 +19,33 @@ BayanGate is an Arabic/MENA-focused sensitive data recognition and redaction SDK
 `READY` -> `IN_PROGRESS` -> `IMPLEMENTED` -> `TESTED` -> `REVIEW_PENDING` -> `ACCEPTED` -> `RELEASE_READY`
 
 ## Task Ledger Summary
-- **Current Task**: BG-003 — Redactor Engine & Masking Policies.
-- **Current Lifecycle State**: `REVIEW_PENDING`
+- **Current Task**: BG-004 — CLI & Python SDK API.
+- **Current Lifecycle State**: `IN_PROGRESS`
 - **Current Owner**: Gemini Flash (Lead Engineering Executor).
 - **Independent Reviewer**: EGM Goldfish Codebase Details Auditor (`egm-codebase-details`).
 - **Branch**: main
-- **Last Verified Commit**: 43807a2
-- **Independent Review Status**: Milestones BG-001 and BG-002 Certified ACCEPTED; Milestone BG-003 implemented with 75/75 automated tests passing and submitted for independent EGM Goldfish review.
+- **Last Verified Commit**: fb362b8
+- **Independent Review Status**: Milestones BG-001, BG-002, and BG-003 Certified ACCEPTED; 75/75 automated tests passing.
 - **Completed Tasks**:
   - BG-001: Arabic-Indic Numeral Normalizer & Span Mapper (ACCEPTED)
   - BG-002: Regional Pattern Matchers (National IDs, GCC IBANs, Phones) (ACCEPTED)
+  - BG-003: Redactor Engine & Masking Policies (ACCEPTED)
+
+## Verification Criteria for BG-004
+1. **Command Line Interface (`bayan_gate/cli.py`)**:
+   - `bayan-gate redact`: Reads input from file (`-i/--input`) or standard input (pipe/streaming), applies policy (`--policy full|partial|hash|synthetic`), outputs redacted text to file (`-o/--output`) or standard output.
+   - `bayan-gate scan`: Audits and reports detected sensitive entities without modifying text, with `--json` summary mode.
+   - `bayan-gate demo`: Self-contained interactive demonstration.
+   - Flag options: `--salt <str>`, `--mask-char <char>`, `--types <type1,type2>`, `--min-confidence <float>`, `--audit-log <path>` (saving privacy-safe JSON receipts).
+2. **Streaming & Large File Support**:
+   - Line-by-line / chunk-by-chunk streaming redaction supporting stdin/stdout redirection (`cat input.txt | bayan-gate redact`).
+3. **Packaging & Operator Documentation**:
+   - Entry point script `bayan-gate = "bayan_gate.cli:main"` in `pyproject.toml`.
+   - `INSTALL.md` operator guide with usage examples, privacy guarantees, and boundaries.
+4. **Pure Python Standard Library**:
+   - Zero external PyPI dependencies (`argparse`, `sys`, `pathlib`, `json`).
+5. **Automated Verification**:
+   - Full automated test suite passing with 0 failures (`python3 -m unittest discover tests`).
 
 ## Verification Criteria for BG-003
 1. **Redactor Engine (`bayan_gate/redactor.py`)**:
