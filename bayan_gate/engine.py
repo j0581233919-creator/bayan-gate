@@ -188,12 +188,24 @@ class RegionalPIIEngine:
         # -------------------------------------------------------------
         if self._is_enabled(EntityType.PHONE_NUMBER, enabled_types):
             # Matches strings resembling phone numbers with digits, dashes, spaces, parentheses (strictly single-line)
-            phone_candidate_regex = re.compile(r"(?:\+?[\d \t()-]{8,20}\b)")
+            phone_candidate_regex = re.compile(r"(?:\+?[\d \t()-]{8,24}\b)")
             for m in phone_candidate_regex.finditer(norm_text):
                 full_val = m.group(0)
                 l_strip = len(full_val) - len(full_val.lstrip(" \t"))
                 r_strip = len(full_val) - len(full_val.rstrip(" \t"))
                 matched_str = full_val.strip(" \t")
+
+                # Trim enclosing sentence parentheses and hyphens that are not an area code
+                while matched_str.startswith("(") and not re.match(r"^\(\d{1,4}\)\s*[\d-]", matched_str):
+                    matched_str = matched_str[1:]
+                    l_strip += 1
+                while matched_str.endswith(("-", " ", "\t")):
+                    matched_str = matched_str[:-1]
+                    r_strip += 1
+                while matched_str.endswith(")") and "(" not in matched_str:
+                    matched_str = matched_str[:-1]
+                    r_strip += 1
+
                 is_valid, meta = validate_regional_phone(matched_str)
                 if is_valid:
                     actual_start = m.start() + l_strip

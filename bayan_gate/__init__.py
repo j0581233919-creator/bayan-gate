@@ -51,6 +51,7 @@ def redact(
     enabled_types=None,
     min_confidence: float = 0.5,
     custom_replacer=None,
+    salt=None,
 ) -> RedactionResult:
     """Redacts sensitive PII from text according to policy."""
     return _default_redactor.redact(
@@ -59,6 +60,7 @@ def redact(
         enabled_types=enabled_types,
         min_confidence=min_confidence,
         custom_replacer=custom_replacer,
+        salt=salt,
     )
 
 

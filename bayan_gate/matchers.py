@@ -233,7 +233,9 @@ def validate_egyptian_national_id(id_str: str) -> Tuple[bool, Dict[str, Any]]:
         return False, {}
 
     gov_code = clean[7:9]
-    gov_name = EGYPT_GOVERNORATES.get(gov_code, "Unknown Governorate")
+    if gov_code not in EGYPT_GOVERNORATES:
+        return False, {}
+    gov_name = EGYPT_GOVERNORATES[gov_code]
 
     seq = int(clean[9:13])
     gender = "Male" if (seq % 2 == 1) else "Female"

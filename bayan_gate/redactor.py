@@ -45,6 +45,7 @@ class PIIRedactor:
         enabled_types: Optional[Set[EntityType]] = None,
         min_confidence: Optional[float] = None,
         custom_replacer: Optional[Callable[[PIISpan], str]] = None,
+        salt: Optional[str] = None,
     ) -> RedactionResult:
         """Detects sensitive entities and applies the specified redaction policy.
 
@@ -54,6 +55,7 @@ class PIIRedactor:
             enabled_types: Set of EntityType categories to detect and redact.
             min_confidence: Confidence threshold for entity detection.
             custom_replacer: Optional callable (PIISpan) -> str for custom replacement strings.
+            salt: Optional per-call HMAC salt override.
 
         Returns:
             RedactionResult containing the redacted text, detected spans, and audit hash.
@@ -78,6 +80,7 @@ class PIIRedactor:
             spans,
             policy=policy,
             custom_replacer=custom_replacer,
+            salt=salt,
         )
 
     def redact_spans(
@@ -86,6 +89,7 @@ class PIIRedactor:
         spans: List[PIISpan],
         policy: MaskingPolicy = MaskingPolicy.REDACT_FULL,
         custom_replacer: Optional[Callable[[PIISpan], str]] = None,
+        salt: Optional[str] = None,
     ) -> RedactionResult:
         """Applies redaction transformations to a pre-computed list of PIISpans.
 
@@ -106,7 +110,7 @@ class PIIRedactor:
 
         chars = list(text)
         for span in sorted_spans:
-            replacement = self._generate_replacement(span, policy, custom_replacer)
+            replacement = self._generate_replacement(span, policy, custom_replacer, salt=salt)
             # Replace slice [start_char:end_char] with replacement string
             chars[span.start_char:span.end_char] = list(replacement)
 
@@ -133,6 +137,7 @@ class PIIRedactor:
         span: PIISpan,
         policy: MaskingPolicy,
         custom_replacer: Optional[Callable[[PIISpan], str]] = None,
+        salt: Optional[str] = None,
     ) -> str:
         """Generates replacement string according to policy."""
         if custom_replacer is not None:
@@ -145,7 +150,7 @@ class PIIRedactor:
             return self._mask_partial(span)
 
         if policy == MaskingPolicy.PSEUDONYMIZE_HASH:
-            return self._pseudonymize_hash(span)
+            return self._pseudonymize_hash(span, salt=salt)
 
         if policy == MaskingPolicy.REPLACE_SYNTHETIC:
             return self._replace_synthetic(span)
@@ -241,10 +246,11 @@ class PIIRedactor:
         keep = max(1, len(raw) // 4)
         return raw[:keep] + (m_char * (len(raw) - 2 * keep)) + raw[-keep:]
 
-    def _pseudonymize_hash(self, span: PIISpan) -> str:
+    def _pseudonymize_hash(self, span: PIISpan, salt: Optional[str] = None) -> str:
         """Generates deterministic keyed HMAC pseudonym token."""
+        effective_salt = salt if salt is not None else self.salt
         msg = f"{span.entity_type.value}:{span.normalized_text}".encode("utf-8")
-        h = hmac.new(self.salt.encode("utf-8"), msg, hashlib.sha256).hexdigest()[:8]
+        h = hmac.new(effective_salt.encode("utf-8"), msg, hashlib.sha256).hexdigest()[:8]
 
         prefix_map = {
             EntityType.SAUDI_NATIONAL_ID: "SA_ID",
