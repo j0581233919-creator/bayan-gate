@@ -31,25 +31,38 @@ BayanGate provides high-precision recognition, classification, and redaction of 
 
 ## Quickstart
 
-### 1. Run Automated Behavioral Tests (75 Passing Tests)
+### 1. Run Automated Behavioral Tests (91 Passing Tests)
 ```bash
 python3 -m unittest discover tests
 ```
 
-### 2. Run the BG-001 Normalizer & Span Mapper Demonstration
+### 2. Redact a Document via CLI
 ```bash
+python3 -m bayan_gate.cli redact -i document.txt -o redacted.txt --policy partial
+```
+
+### 3. Scan a Document for Sensitive PII (Pre-Commit / CI Gate)
+```bash
+python3 -m bayan_gate.cli scan -i document.txt --json
+```
+
+### 4. Run Interactive Demonstrations
+```bash
+# Normalizer & Span Mapper
 python3 examples/run_normalizer_demo.py
-```
 
-### 3. Run the BG-002 Regional Pattern Matchers Demonstration
-```bash
+# Regional Pattern Matchers
 python3 examples/run_pattern_matching_demo.py
-```
 
-### 4. Run the BG-003 Redactor Engine Demonstration
-```bash
+# Redactor Engine & Masking Policies
 python3 examples/run_redaction_demo.py
 ```
+
+---
+
+## Installation & Operator Guide
+
+See [INSTALL.md](INSTALL.md) for full installation options, streaming integration, CLI command reference, and privacy guarantees.
 
 ---
 
