@@ -25,6 +25,7 @@ from .matchers import (
     validate_regional_phone,
 )
 from .engine import RegionalPIIEngine
+from .redactor import PIIRedactor
 
 __all__ = [
     "EntityType",
@@ -44,4 +45,5 @@ __all__ = [
     "validate_credit_card",
     "validate_regional_phone",
     "RegionalPIIEngine",
+    "PIIRedactor",
 ]

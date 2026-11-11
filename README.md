@@ -18,6 +18,12 @@ BayanGate provides high-precision recognition, classification, and redaction of 
   - Regional Phone Numbers (+966, +971, +20, etc.)
   - Credit / Debit Cards (with Luhn validation)
   - Emails, IP Addresses, and Custom Patterns
+- **Configurable Redaction & Masking Policies (`PIIRedactor`)**:
+  - `REDACT_FULL`: Replaces sensitive entities with category tags (`[REDACTED_SAUDI_NATIONAL_ID]`, `[REDACTED_GCC_IBAN]`).
+  - `MASK_PARTIAL`: Format-preserving obfuscation retaining leading/trailing characters and delimiters (`108****678`, `SA03 **** **** 7519`, `١٠٨****٦٧٨`).
+  - `PSEUDONYMIZE_HASH`: Salted deterministic HMAC surrogate tokenization (`[SA_ID_ab21e32b]`), ensuring consistent anonymization of recurring entities.
+  - `REPLACE_SYNTHETIC`: Realistic synthetic dummy replacements.
+- **Zero Offset Corruption**: Replaces character spans in reverse order (right to left) to eliminate coordinate drift across mixed RTL/LTR Arabic and Latin text.
 - **Zero Sensitive Logging**: Audit records and diagnostic outputs redact raw unredacted PII by default to prevent accidental data leakage into log management systems.
 - **Zero External Python Dependencies**: 100% pure Python standard library runtime (Python 3.10+).
 
@@ -25,7 +31,7 @@ BayanGate provides high-precision recognition, classification, and redaction of 
 
 ## Quickstart
 
-### 1. Run Automated Behavioral Tests (56 Passing Tests)
+### 1. Run Automated Behavioral Tests (75 Passing Tests)
 ```bash
 python3 -m unittest discover tests
 ```
@@ -38,6 +44,11 @@ python3 examples/run_normalizer_demo.py
 ### 3. Run the BG-002 Regional Pattern Matchers Demonstration
 ```bash
 python3 examples/run_pattern_matching_demo.py
+```
+
+### 4. Run the BG-003 Redactor Engine Demonstration
+```bash
+python3 examples/run_redaction_demo.py
 ```
 
 ---
