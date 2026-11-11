@@ -1,12 +1,12 @@
 # BayanGate Task Ledger
 
 ## Current Context
-- **Current Task**: BG-005 — Synthetic Accuracy & Boundary Test Suite.
-- **Current Lifecycle State**: `RELEASE_READY`
+- **Current Task**: All Milestones (BG-001 through BG-005) Completed and Certified ACCEPTED; v1.0.0 Published to GitHub.
+- **Current Lifecycle State**: `PUBLISHED`
 - **Current Owner**: Gemini Flash (Lead Engineering Executor).
 - **Branch**: main
-- **Last Verified Commit**: 452f689 (Milestone BG-005 Certified ACCEPTED)
-- **Independent Review Status**: All milestones (BG-001, BG-002, BG-003, BG-004, and BG-005) Certified **ACCEPTED** by independent EGM Goldfish Auditors (`egm-codebase-details`). The BayanGate package is certified **RELEASE_READY** with 117/117 automated tests passing.
+- **Last Verified Commit**: a463902 (v1.0.0 Release Tagged)
+- **Independent Review Status**: All milestones (BG-001, BG-002, BG-003, BG-004, and BG-005) Certified **ACCEPTED** by independent EGM Goldfish Auditors (`egm-codebase-details`). Publication safety gate certified **ACCEPTED** by independent EGM Goldfish Auditor subagent 35e3376a-b75b-4fb8-9af9-1220deeb6bd4. The BayanGate package is certified **PUBLISHED** with 117/117 automated tests passing.
 
 ## Backlog
 | Task ID | Description | State | Owner | Acceptance Criteria |
@@ -74,6 +74,12 @@
   - Independent review receipt: EGM Goldfish Codebase Details Auditor (`egm-codebase-details` subagent `9e309d8a-c9f9-47eb-b86d-35aed7ce1a2e`) delivered official **ACCEPTED** verdict recorded in `reviews/EGM_BG005_ACCEPTANCE_VERDICT.md`.
   - BG-005 lifecycle state: **ACCEPTED**.
   - Package release lifecycle state: **RELEASE_READY**.
+- **2026-11-12T00:21**: Public Release v1.0.0 & Public GitHub Publication:
+  - Repository created: `https://github.com/j0581233919-creator/bayan-gate`
+  - Release created: `https://github.com/j0581233919-creator/bayan-gate/releases/tag/v1.0.0`
+  - Release artifact uploaded: `bayan-gate-v1.0.0.zip` (96,217 bytes, SHA-256 `b9fc789c461d29660cffd80cf2bed498f8727b722d862b8707f4ed382823d8c7`).
+  - Independent safety gate audit receipt: EGM Goldfish Auditor subagent `35e3376a-b75b-4fb8-9af9-1220deeb6bd4` delivered official **ACCEPTED** verdict recorded in `reviews/EGM_RELEASE_GATE_ACCEPTANCE.md`.
+  - Final Lifecycle State: **`PUBLISHED`**.
 
 ## Limitations & Notes
 - Checksums strictly verified where standard (Luhn, ISO 7064 MOD 97-10 for IBAN); no fictional algorithmic claims made.
