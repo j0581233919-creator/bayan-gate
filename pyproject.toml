@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bayan-gate"
-version = "0.1.0"
+version = "1.0.0"
 description = "Arabic & MENA-focused sensitive data recognition and privacy-safe redaction SDK."
 readme = "README.md"
 requires-python = ">=3.10"
