@@ -10,6 +10,7 @@ Implements:
 
 from __future__ import annotations
 import calendar
+import datetime
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -166,7 +167,8 @@ def validate_uae_emirates_id(id_str: str) -> Tuple[bool, Dict[str, Any]]:
     year_str = clean[3:7]
     try:
         year = int(year_str)
-        if not (1900 <= year <= 2030):
+        max_year = datetime.date.today().year + 1
+        if not (1900 <= year <= max_year):
             return False, {}
     except ValueError:
         return False, {}

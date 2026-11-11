@@ -26,14 +26,14 @@ from .matchers import (
 )
 
 
-# Specificity priority for overlap resolution
+# Specificity priority for overlap resolution (structured national IDs take precedence over generic cards)
 PRIORITY_MAP: Dict[EntityType, int] = {
     EntityType.GCC_IBAN: 100,
-    EntityType.CREDIT_CARD: 90,
-    EntityType.UAE_NATIONAL_ID: 80,
-    EntityType.EGYPTIAN_NATIONAL_ID: 80,
-    EntityType.SAUDI_NATIONAL_ID: 70,
-    EntityType.SAUDI_IQAMA: 70,
+    EntityType.UAE_NATIONAL_ID: 95,
+    EntityType.EGYPTIAN_NATIONAL_ID: 95,
+    EntityType.SAUDI_NATIONAL_ID: 90,
+    EntityType.SAUDI_IQAMA: 90,
+    EntityType.CREDIT_CARD: 85,
     EntityType.EMAIL_ADDRESS: 60,
     EntityType.IP_ADDRESS: 50,
     EntityType.PHONE_NUMBER: 40,
@@ -306,8 +306,8 @@ class RegionalPIIEngine:
             return sorted(spans, key=lambda s: s.start_char)
 
         # Sort criteria:
-        # 1. Checksum validity (True > None > False)
-        # 2. Priority of entity type (higher is more specific)
+        # 1. Priority of entity type (PRIORITY_MAP: national IDs / IBANs take precedence)
+        # 2. Checksum validity (True > None > False)
         # 3. Span length (longer match preferred over substring)
         # 4. Confidence
         def sort_key(s: PIISpan) -> Tuple[int, int, int, float]:

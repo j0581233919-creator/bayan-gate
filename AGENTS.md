@@ -19,15 +19,32 @@ BayanGate is an Arabic/MENA-focused sensitive data recognition and redaction SDK
 `READY` -> `IN_PROGRESS` -> `IMPLEMENTED` -> `TESTED` -> `REVIEW_PENDING` -> `ACCEPTED` -> `RELEASE_READY`
 
 ## Task Ledger Summary
-- **Current Task**: BG-002 — Regional Pattern Matchers (National IDs, GCC IBANs, Phones).
-- **Current Lifecycle State**: `REVIEW_PENDING`
+- **Current Task**: BG-003 — Redactor Engine & Masking Policies.
+- **Current Lifecycle State**: `IN_PROGRESS`
 - **Current Owner**: Gemini Flash (Lead Engineering Executor).
 - **Independent Reviewer**: EGM Goldfish Codebase Details Auditor (`egm-codebase-details`).
 - **Branch**: main
-- **Last Verified Commit**: a2e5b39
-- **Independent Review Status**: Milestone BG-001 Certified ACCEPTED; Milestone BG-002 implemented with 56/56 automated tests passing and submitted for independent EGM Goldfish review.
+- **Last Verified Commit**: 4cc2f68
+- **Independent Review Status**: Milestones BG-001 and BG-002 Certified ACCEPTED; 56/56 automated tests passing.
 - **Completed Tasks**:
   - BG-001: Arabic-Indic Numeral Normalizer & Span Mapper (ACCEPTED)
+  - BG-002: Regional Pattern Matchers (National IDs, GCC IBANs, Phones) (ACCEPTED)
+
+## Verification Criteria for BG-003
+1. **Redactor Engine (`bayan_gate/redactor.py`)**:
+   - Implements `PIIRedactor` class applying `MaskingPolicy` modes:
+     - `REDACT_FULL`: Replaces sensitive spans with typed tags (e.g. `[REDACTED_SAUDI_NATIONAL_ID]`, `[REDACTED_GCC_IBAN]`) or configurable custom placeholder.
+     - `MASK_PARTIAL`: Preserves leading and trailing characters while masking middle digits with asterisks (e.g. `102****789`, `SA03****7519`, `050****4567`). Preserves spacing and delimiters.
+     - `PSEUDONYMIZE_HASH`: Deterministic salted SHA-256 / HMAC tokenization (e.g. `[ID_a8f9b2c4]`) ensuring the same PII token produces the same surrogate across a document while remaining irreversible.
+     - `REPLACE_SYNTHETIC`: Realistic synthetic dummy replacements preserving structure and format without leaking real identity data.
+2. **Zero Offset Corruption on Mixed RTL/LTR Text**:
+   - Redactions replace text in reverse character offset order (from right to left in string indices) ensuring that replacements do not distort or invalidate pending offset coordinates of subsequent spans.
+   - Arabic text directionality and punctuation around redacted spans remain intact without unicode corruption.
+3. **Zero Sensitive Logging Policy**:
+   - `RedactionResult` output suppresses raw unredacted entity strings by default (`include_raw_spans=False`).
+   - Audit hash (SHA-256 of original input + redactions) generated for tamper-evident provenance.
+4. **Pure Python Standard Library**: Zero external PyPI dependencies (`hashlib`, `hmac`, `secrets`).
+5. **Automated Verification**: Complete behavioral test suite passing (`python3 -m unittest discover tests`).
 
 ## Verification Criteria for BG-002
 1. **Regional Identity Document Matchers (`bayan_gate/matchers/national_ids.py` or `bayan_gate/matchers.py`)**:
