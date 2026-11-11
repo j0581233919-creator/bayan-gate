@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bayan-gate"
+version = "0.1.0"
+description = "Arabic & MENA-focused sensitive data recognition and privacy-safe redaction SDK."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "BayanGate Contributors", email = "contributors@localhost"}
+]
+keywords = [
+    "pii", "redaction", "privacy", "arabic", "mena",
+    "saudi-id", "emirates-id", "egyptian-id", "iban", "arabic-indic-numerals"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Healthcare Industry",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Text Processing :: Linguistic",
+]
+dependencies = []
+
+[project.scripts]
+bayan-gate = "bayan_gate.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bayan_gate*"]

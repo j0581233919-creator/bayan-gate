@@ -17,3 +17,28 @@ BayanGate is an Arabic/MENA-focused sensitive data recognition and redaction SDK
 
 ## Lifecycle States
 `READY` -> `IN_PROGRESS` -> `IMPLEMENTED` -> `TESTED` -> `REVIEW_PENDING` -> `ACCEPTED` -> `RELEASE_READY`
+
+## Task Ledger Summary
+- **Current Task**: BG-001 — Arabic-Indic Numeral Normalizer & Span Mapper.
+- **Current Lifecycle State**: `REVIEW_PENDING`
+- **Current Owner**: Gemini Flash (Lead Engineering Executor).
+- **Independent Reviewer**: EGM Goldfish Codebase Details Auditor (`egm-codebase-details`).
+- **Branch**: main
+- **Last Verified Commit**: 110da37
+- **Independent Review Status**: BG-001 implemented with 20/20 automated tests passing; submitted for independent EGM Goldfish review.
+
+## Verification Criteria for BG-001
+1. **Core Data Models (`bayan_gate/models.py`)**:
+   - `EntityType` enum covering MENA regional documents (Saudi National ID/Iqama, Emirates ID, Egyptian National ID, GCC IBANs) and general identifiers (Phone, Credit Card, Email, etc.).
+   - `MaskingPolicy` enum defining transformation modes (`REDACT_FULL`, `MASK_PARTIAL`, `PSEUDONYMIZE_HASH`, `REPLACE_SYNTHETIC`).
+   - `PIISpan` dataclass with exact character offsets (`[start_char:end_char]`), validation guards, `verify_grounding(original_text)`, and dictionary serialization.
+   - `RedactionResult` dataclass with privacy-safe default serialization (`include_raw_spans=False`).
+2. **Arabic-Indic Numeral Normalizer & Span Mapper (`bayan_gate/normalizer.py`)**:
+   - Bidirectional digit translation (`to_western_digits`, `to_arabic_indic_digits`) for Eastern Arabic-Indic (`٠-٩`) and Extended Persian/Urdu digits (`۰-۹`).
+   - Zero-drift `NormalizedText` tracking `index_map` and `reverse_map` when stripping diacritics (Tashkeel) and Tatweel/Kashida (`ـ`).
+   - `map_span_to_original(norm_start, norm_end)` mapping normalized spans to 100% exact original unicode text slices.
+3. **Pure Standard Library Runtime**:
+   - Zero external PyPI dependencies (`dependencies = []` in `pyproject.toml`).
+4. **Automated Verification**:
+   - Comprehensive test suite passing with 0 failures (`python3 -m unittest discover tests`).
+   - Executable demonstration script in `examples/run_normalizer_demo.py`.
