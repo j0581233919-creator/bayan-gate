@@ -15,6 +15,16 @@ from .normalizer import (
     EXTENDED_ARABIC_INDIC_DIGITS,
     WESTERN_ARABIC_DIGITS,
 )
+from .matchers import (
+    validate_luhn,
+    validate_iban,
+    validate_saudi_national_id_or_iqama,
+    validate_uae_emirates_id,
+    validate_egyptian_national_id,
+    validate_credit_card,
+    validate_regional_phone,
+)
+from .engine import RegionalPIIEngine
 
 __all__ = [
     "EntityType",
@@ -26,4 +36,12 @@ __all__ = [
     "EASTERN_ARABIC_INDIC_DIGITS",
     "EXTENDED_ARABIC_INDIC_DIGITS",
     "WESTERN_ARABIC_DIGITS",
+    "validate_luhn",
+    "validate_iban",
+    "validate_saudi_national_id_or_iqama",
+    "validate_uae_emirates_id",
+    "validate_egyptian_national_id",
+    "validate_credit_card",
+    "validate_regional_phone",
+    "RegionalPIIEngine",
 ]

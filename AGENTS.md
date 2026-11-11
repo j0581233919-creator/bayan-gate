@@ -20,12 +20,12 @@ BayanGate is an Arabic/MENA-focused sensitive data recognition and redaction SDK
 
 ## Task Ledger Summary
 - **Current Task**: BG-002 — Regional Pattern Matchers (National IDs, GCC IBANs, Phones).
-- **Current Lifecycle State**: `IN_PROGRESS`
+- **Current Lifecycle State**: `REVIEW_PENDING`
 - **Current Owner**: Gemini Flash (Lead Engineering Executor).
 - **Independent Reviewer**: EGM Goldfish Codebase Details Auditor (`egm-codebase-details`).
 - **Branch**: main
-- **Last Verified Commit**: 4d6e42c
-- **Independent Review Status**: Milestone BG-001 independently audited and certified ACCEPTED by EGM Goldfish Codebase Details Auditor; 20/20 tests passing.
+- **Last Verified Commit**: a2e5b39
+- **Independent Review Status**: Milestone BG-001 Certified ACCEPTED; Milestone BG-002 implemented with 56/56 automated tests passing and submitted for independent EGM Goldfish review.
 - **Completed Tasks**:
   - BG-001: Arabic-Indic Numeral Normalizer & Span Mapper (ACCEPTED)
 

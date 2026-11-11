@@ -25,7 +25,7 @@ BayanGate provides high-precision recognition, classification, and redaction of 
 
 ## Quickstart
 
-### 1. Run Automated Behavioral Tests (20 Passing Tests)
+### 1. Run Automated Behavioral Tests (56 Passing Tests)
 ```bash
 python3 -m unittest discover tests
 ```
@@ -33,6 +33,11 @@ python3 -m unittest discover tests
 ### 2. Run the BG-001 Normalizer & Span Mapper Demonstration
 ```bash
 python3 examples/run_normalizer_demo.py
+```
+
+### 3. Run the BG-002 Regional Pattern Matchers Demonstration
+```bash
+python3 examples/run_pattern_matching_demo.py
 ```
 
 ---

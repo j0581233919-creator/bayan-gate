@@ -175,6 +175,8 @@ class ArabicIndicNormalizer:
         convert_digits: bool = True,
         normalize_alef: bool = False,
         normalize_teh_marbuta: bool = False,
+        normalize_yeh: bool = False,
+        normalize_kaf: bool = False,
     ) -> NormalizedText:
         """Normalizes Arabic text with full character-level coordinate tracking.
 
@@ -228,6 +230,16 @@ class ArabicIndicNormalizer:
                 # Teh Marbuta (ة) -> Heh (ه)
                 if cp == 0x0629:
                     target_ch = "ه"
+
+            if normalize_yeh:
+                # Persian Yeh (ی, U+06CC), Arabic Alef Maksura (ى, U+0649) -> Arabic Yeh (ي, U+064A)
+                if cp in (0x06CC, 0x0649):
+                    target_ch = "ي"
+
+            if normalize_kaf:
+                # Persian/Urdu Keheh (ک, U+06A9) -> Arabic Kaf (ك, U+0643)
+                if cp == 0x06A9:
+                    target_ch = "ك"
 
             norm_chars.append(target_ch)
             index_map.append(orig_idx)
